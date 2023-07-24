@@ -1,4 +1,10 @@
 .main-content {
   display: flex;
   justify-content: space-evenly;
+  margin-top: 10px;
+}
+
+.map-container {
+  width: 1000px;
+  height: 800px;
 }

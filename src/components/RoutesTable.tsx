@@ -7,7 +7,6 @@ const columns: ColumnsType<ITableData> = [
   {
     title: "Маршрут",
     dataIndex: "name",
-    render: (text: string) => <a>{text}</a>,
   },
   {
     title: "Точка 1 (lat, lng)",
