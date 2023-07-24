@@ -2,6 +2,8 @@ import React from "react";
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { ITableData } from "../models";
+import { useAppDispatch, useAppSelector } from "../index";
+import { getChosenRoute, choseTheRoute } from "../store/routesReducer";
 
 const columns: ColumnsType<ITableData> = [
   {
@@ -45,20 +47,25 @@ const data: ITableData[] = [
   },
 ];
 
-const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: ITableData[]) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
-  },
-  getCheckboxProps: (record: ITableData) => ({
-    disabled: record.name === "Disabled User",
-    name: record.name,
-  }),
-};
 const RouteTable = () => {
+  const dispatch = useAppDispatch();
+  const chosenRoute = useAppSelector(getChosenRoute());
+  console.log(chosenRoute);
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: ITableData[]) => {
+      // @ts-ignore
+      dispatch(choseTheRoute(selectedRows[0].key));
+      console.log(
+        `selectedRowKeys: ${selectedRowKeys}`,
+        "selectedRows: ",
+        selectedRows
+      );
+    },
+    getCheckboxProps: (record: ITableData) => ({
+      disabled: record.name === "Disabled User",
+      name: record.name,
+    }),
+  };
   return (
     <div>
       <Table

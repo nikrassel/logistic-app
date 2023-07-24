@@ -6,7 +6,9 @@ import MapComponent from "../components/MapComponent";
 const RoutesPage = () => {
   return (
     <div className="main-content">
-      <RoutesTable />
+      <div className="table-container">
+        <RoutesTable />
+      </div>
       <div className="map-container">
         <MapComponent />
       </div>

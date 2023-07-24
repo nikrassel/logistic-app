@@ -4,7 +4,10 @@
   margin-top: 10px;
 }
 
+.table-container {
+}
+
 .map-container {
   width: 1000px;
-  height: 800px;
+  height: 90vh;
 }

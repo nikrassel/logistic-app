@@ -5,7 +5,6 @@ import "./index.css";
 
 const MapComponent = () => {
   const centerPoint: number[] = [59.84660399, 30.29496392];
-
   return (
     <>
       {/* @ts-ignore */}

@@ -5,3 +5,8 @@ export interface ITableData {
   pointTwo: string;
   pointThree: string;
 }
+
+export interface IRoutesState {
+  routes: ITableData[];
+  chosenRoute: ITableData | null;
+}
