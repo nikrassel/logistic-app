@@ -1,9 +1,9 @@
 export interface ITableData {
   key: React.Key;
   name: string;
-  pointOne: string;
-  pointTwo: string;
-  pointThree: string;
+  pointOne: number[];
+  pointTwo: number[];
+  pointThree: number[];
 }
 
 export interface IRoutesState {
