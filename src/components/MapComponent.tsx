@@ -1,16 +1,17 @@
-import React from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import React, { useEffect } from "react";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import L, { Icon } from "leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { useAppSelector } from "../store/createStore";
 import { getChosenRoute } from "../store/routesReducer";
 import "leaflet/dist/leaflet.css";
 import "./index.css";
-import { ITableData } from "../models";
+import { ITableData, IPoints } from "../models";
 
 const MapComponent = () => {
+  const centerPoint = new L.LatLng(59.938955, 30.315644);
   const chosenRoute: ITableData | null = useAppSelector(getChosenRoute());
-  let routePoints;
+  let routePoints: IPoints[] | undefined;
   if (chosenRoute) {
     routePoints = [
       {
@@ -34,10 +35,29 @@ const MapComponent = () => {
     iconUrl: require(".//img/placeholder.png"),
     iconSize: [38, 38],
   });
-  const centerPoint = new L.LatLng(59.84660399, 30.29496392);
+  const RecenterAutomatically = () => {
+    const map = useMap();
+    useEffect(() => {
+      if (chosenRoute) {
+        const lat =
+          (chosenRoute.pointOne[0] +
+            chosenRoute.pointTwo[0] +
+            chosenRoute.pointThree[0]) /
+          3;
+        const lng =
+          (chosenRoute.pointOne[1] +
+            chosenRoute.pointTwo[1] +
+            chosenRoute.pointThree[1]) /
+          3;
+        const newCenter = new L.LatLng(lat, lng);
+        map.setView(newCenter);
+      }
+    }, [map]);
+    return null;
+  };
   return (
     <>
-      <MapContainer center={centerPoint} zoom={13}>
+      <MapContainer center={centerPoint} zoom={12}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -50,6 +70,7 @@ const MapComponent = () => {
               </Marker>
             ))}
         </MarkerClusterGroup>
+        <RecenterAutomatically />
       </MapContainer>
     </>
   );

@@ -10,3 +10,8 @@ export interface IRoutesState {
   routes: ITableData[];
   chosenRoute: ITableData | null;
 }
+
+export interface IPoints {
+  geocode: L.LatLng;
+  popUp: string;
+}
