@@ -7,6 +7,7 @@ import { getChosenRoute } from "../store/routesReducer";
 import "leaflet/dist/leaflet.css";
 import "./index.css";
 import { IRoute, IPoints } from "../models";
+import RoutingMachine from "./RoutingMachine";
 
 const MapComponent = () => {
   const centerPoint = new L.LatLng(59.938955, 30.315644);
@@ -71,6 +72,7 @@ const MapComponent = () => {
             ))}
         </MarkerClusterGroup>
         <RecenterAutomatically />
+        {chosenRoute && <RoutingMachine route={chosenRoute} />}
       </MapContainer>
     </>
   );
