@@ -2,8 +2,8 @@ import React from "react";
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { ITableData } from "../models";
-import { useAppDispatch, useAppSelector } from "../store/createStore";
-import { getChosenRoute, choseTheRoute } from "../store/routesReducer";
+import { useAppDispatch, useAppSelector } from "../hooks/storeHooks";
+import { getAllRoutes, choseTheRoute } from "../store/routesReducer";
 
 const columns: ColumnsType<ITableData> = [
   {
@@ -12,54 +12,32 @@ const columns: ColumnsType<ITableData> = [
   },
   {
     title: "Точка 1 (lat, lng)",
-    dataIndex: "pointOne",
+    dataIndex: "firstPoint",
   },
   {
     title: "Точка 2 (lat, lng)",
-    dataIndex: "pointTwo",
+    dataIndex: "secondPoint",
   },
   {
     title: "Точка 3 (lat, lng)",
-    dataIndex: "pointThree",
-  },
-];
-const data: ITableData[] = [
-  {
-    key: "1",
-    name: "Маршрут №1",
-    pointOne: [59.84660399, 30.29496392],
-    pointTwo: [59.82934196, 30.42423701],
-    pointThree: [59.83567701, 30.38064206],
-  },
-  {
-    key: "2",
-    name: "Маршрут №2",
-    pointOne: [59.82934196, 30.42423701],
-    pointTwo: [59.82761295, 30.41705607],
-    pointThree: [59.84660399, 30.29496392],
-  },
-  {
-    key: "3",
-    name: "Маршрут №3",
-    pointOne: [59.83567701, 30.38064206],
-    pointTwo: [59.84660399, 30.29496392],
-    pointThree: [59.82761295, 30.41705607],
+    dataIndex: "thirdPoint",
   },
 ];
 
 const RouteTable = () => {
   const dispatch = useAppDispatch();
-  const chosenRoute = useAppSelector(getChosenRoute());
-  console.log(chosenRoute);
+  const routes = useAppSelector(getAllRoutes());
+  const tableData = routes.map((route) => {
+    return {
+      ...route,
+      firstPoint: route.pointOne.join(", "),
+      secondPoint: route.pointTwo.join(", "),
+      thirdPoint: route.pointThree.join(", "),
+    };
+  });
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: ITableData[]) => {
-      // @ts-ignore
       dispatch(choseTheRoute(selectedRows[0].key));
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
     },
     getCheckboxProps: (record: ITableData) => ({
       disabled: record.name === "Disabled User",
@@ -74,7 +52,7 @@ const RouteTable = () => {
           ...rowSelection,
         }}
         columns={columns}
-        dataSource={data}
+        dataSource={tableData}
         pagination={false}
       />
     </div>

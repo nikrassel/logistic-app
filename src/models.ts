@@ -1,4 +1,4 @@
-export interface ITableData {
+export interface IRoute {
   key: React.Key;
   name: string;
   pointOne: number[];
@@ -6,9 +6,15 @@ export interface ITableData {
   pointThree: number[];
 }
 
+export interface ITableData extends IRoute {
+  firstPoint: string;
+  secondPoint: string;
+  thirdPoint: string;
+}
+
 export interface IRoutesState {
-  routes: ITableData[];
-  chosenRoute: ITableData | null;
+  routes: IRoute[];
+  chosenRoute: IRoute | null;
 }
 
 export interface IPoints {

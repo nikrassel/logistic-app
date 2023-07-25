@@ -2,15 +2,15 @@ import React, { useEffect } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import L, { Icon } from "leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { useAppSelector } from "../store/createStore";
+import { useAppSelector } from "../hooks/storeHooks";
 import { getChosenRoute } from "../store/routesReducer";
 import "leaflet/dist/leaflet.css";
 import "./index.css";
-import { ITableData, IPoints } from "../models";
+import { IRoute, IPoints } from "../models";
 
 const MapComponent = () => {
   const centerPoint = new L.LatLng(59.938955, 30.315644);
-  const chosenRoute: ITableData | null = useAppSelector(getChosenRoute());
+  const chosenRoute: IRoute | null = useAppSelector(getChosenRoute());
   let routePoints: IPoints[] | undefined;
   if (chosenRoute) {
     routePoints = [

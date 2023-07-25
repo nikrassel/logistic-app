@@ -50,6 +50,8 @@ export const choseTheRoute = (data: React.Key) => (dispatch: any) => {
   dispatch(setTheRoute(data));
 };
 
+export const getAllRoutes = () => (state: RootState) => state.routes.routes;
+
 export const getChosenRoute = () => (state: RootState) =>
   state.routes.chosenRoute;
 
