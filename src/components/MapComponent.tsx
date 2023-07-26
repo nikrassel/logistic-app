@@ -7,7 +7,7 @@ import { getChosenRoute } from "../store/routesReducer";
 import "leaflet/dist/leaflet.css";
 import "./index.css";
 import { IRoute, IPoints } from "../models";
-import RoutingMachine from "./RoutingMachine";
+import { CreateRoutineMachineLayer } from "./RoutingMachine";
 
 const MapComponent = () => {
   const centerPoint = new L.LatLng(59.938955, 30.315644);
@@ -38,6 +38,10 @@ const MapComponent = () => {
   });
   const RecenterAutomatically = () => {
     const map = useMap();
+    const oldRoute = document.querySelector("g");
+    if (oldRoute) {
+      oldRoute.innerHTML = "";
+    }
     useEffect(() => {
       if (chosenRoute) {
         const lat =
@@ -52,6 +56,7 @@ const MapComponent = () => {
           3;
         const newCenter = new L.LatLng(lat, lng);
         map.setView(newCenter);
+        map.addControl(CreateRoutineMachineLayer(chosenRoute));
       }
     }, [map]);
     return null;
@@ -72,7 +77,6 @@ const MapComponent = () => {
             ))}
         </MarkerClusterGroup>
         <RecenterAutomatically />
-        {chosenRoute && <RoutingMachine route={chosenRoute} />}
       </MapContainer>
     </>
   );

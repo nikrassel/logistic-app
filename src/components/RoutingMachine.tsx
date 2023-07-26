@@ -1,19 +1,18 @@
 import L from "leaflet";
-import { createControlComponent } from "@react-leaflet/core";
+// import { createControlComponent } from "@react-leaflet/core";
 import "leaflet-routing-machine";
 
-const CreateRoutineMachineLayer = (props: any) => {
-  const chosenRoute = props.route;
+export const CreateRoutineMachineLayer = (route: any) => {
   const instance = L.Routing.control({
     waypoints: [
-      chosenRoute
-        ? L.latLng(chosenRoute.pointOne[0], chosenRoute.pointOne[1])
+      route
+        ? L.latLng(route.pointOne[0], route.pointOne[1])
         : L.latLng(59.84660399, 30.29496392),
-      chosenRoute
-        ? L.latLng(chosenRoute.pointTwo[0], chosenRoute.pointTwo[1])
+      route
+        ? L.latLng(route.pointTwo[0], route.pointTwo[1])
         : L.latLng(59.83567701, 30.38064206),
-      chosenRoute
-        ? L.latLng(chosenRoute.pointThree[0], chosenRoute.pointThree[1])
+      route
+        ? L.latLng(route.pointThree[0], route.pointThree[1])
         : L.latLng(59.82934196, 30.42423701),
     ],
     router: L.Routing.osrmv1({
@@ -34,6 +33,6 @@ const CreateRoutineMachineLayer = (props: any) => {
   return instance;
 };
 
-const RoutingMachine = createControlComponent(CreateRoutineMachineLayer);
+// const RoutingMachine = createControlComponent(CreateRoutineMachineLayer);
 
-export default RoutingMachine;
+// export default RoutingMachine;
