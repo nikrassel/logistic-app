@@ -1,7 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { ITableData } from "../models";
+import { IRoute, ITableData } from "../models";
 import { useAppDispatch, useAppSelector } from "../hooks/storeHooks";
 import { getAllRoutes, choseTheRoute } from "../store/routesReducer";
 
@@ -26,8 +26,8 @@ const columns: ColumnsType<ITableData> = [
 
 const RouteTable = () => {
   const dispatch = useAppDispatch();
-  const routes = useAppSelector(getAllRoutes());
-  const tableData = routes.map((route) => {
+  const routes: IRoute[] = useAppSelector(getAllRoutes());
+  const tableData = routes?.map((route) => {
     return {
       ...route,
       firstPoint: route.pointOne.join(", "),

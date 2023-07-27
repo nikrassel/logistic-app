@@ -36,7 +36,7 @@ const MapComponent = () => {
     iconUrl: require(".//img/placeholder.png"),
     iconSize: [38, 38],
   });
-  const RecenterAutomatically = () => {
+  const SetNewRoute = () => {
     const map = useMap();
     const oldRoute = document.querySelector("g");
     if (oldRoute) {
@@ -76,7 +76,7 @@ const MapComponent = () => {
               </Marker>
             ))}
         </MarkerClusterGroup>
-        <RecenterAutomatically />
+        <SetNewRoute />
       </MapContainer>
     </>
   );
