@@ -15,6 +15,12 @@ export interface ITableData extends IRoute {
 export interface IRoutesState {
   routes: IRoute[];
   chosenRoute: IRoute | null;
+  OSRMRoute?: number[];
+}
+
+export interface IFinalRoute {
+  chosenRoute: IRoute;
+  OSRMRoute: number[];
 }
 
 export interface IPoints {

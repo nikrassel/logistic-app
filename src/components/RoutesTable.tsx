@@ -3,7 +3,8 @@ import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { IRoute, ITableData } from "../models";
 import { useAppDispatch, useAppSelector } from "../hooks/storeHooks";
-import { getAllRoutes, choseTheRoute } from "../store/routesReducer";
+import { setRoute } from "../store/routesReducer";
+import { RootState } from "../store/createStore";
 
 const columns: ColumnsType<ITableData> = [
   {
@@ -26,7 +27,9 @@ const columns: ColumnsType<ITableData> = [
 
 const RouteTable = () => {
   const dispatch = useAppDispatch();
-  const routes: IRoute[] = useAppSelector(getAllRoutes());
+  const routes: IRoute[] = useAppSelector(
+    (state: RootState) => state.routesReducer.routes
+  );
   const tableData = routes?.map((route) => {
     return {
       ...route,
@@ -37,7 +40,7 @@ const RouteTable = () => {
   });
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: ITableData[]) => {
-      dispatch(choseTheRoute(selectedRows[0].key));
+      dispatch(setRoute(selectedRows[0]));
     },
     getCheckboxProps: (record: ITableData) => ({
       disabled: record.name === "Disabled User",

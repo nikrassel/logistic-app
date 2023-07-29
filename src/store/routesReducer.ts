@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAction, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { IRoutesState } from "../models";
-import type { RootState } from "./createStore";
+import { IRoutesState, IFinalRoute } from "../models";
+// import type { RootState } from "./createStore";
 
 const initialState: IRoutesState = {
   routes: [
@@ -34,25 +34,32 @@ const routesSlice = createSlice({
   name: "routes",
   initialState,
   reducers: {
-    setTheRoute(state, action: PayloadAction<React.Key>) {
+    setTheRoute(state, action: PayloadAction<IFinalRoute>) {
       const routeIndex = state.routes.findIndex(
-        (route) => route.key === action.payload
+        (route) => route.key === action.payload.chosenRoute.key
       );
       state.chosenRoute = state.routes[routeIndex];
+      state.OSRMRoute = action.payload.OSRMRoute;
     },
   },
 });
 
-const { reducer: routesReducer, actions } = routesSlice;
-const { setTheRoute } = actions;
+export const SET_ROUTE = "routes/setRoute";
+export const setRoute = createAction<Object>(SET_ROUTE);
 
-export const choseTheRoute = (data: React.Key) => (dispatch: any) => {
-  dispatch(setTheRoute(data));
-};
+export const { setTheRoute } = routesSlice.actions;
+export default routesSlice.reducer;
 
-export const getAllRoutes = () => (state: RootState) => state.routes.routes;
+// const { reducer: routesReducer, actions } = routesSlice;
+// const { setTheRoute } = actions;
 
-export const getChosenRoute = () => (state: RootState) =>
-  state.routes.chosenRoute;
+// export const choseTheRoute = (data: React.Key) => (dispatch: any) => {
+//   dispatch(setTheRoute(data));
+// };
 
-export default routesReducer;
+// export const getAllRoutes = () => (state: RootState) => state.routes.routes;
+
+// export const getChosenRoute = () => (state: RootState) =>
+//   state.routes.chosenRoute;
+
+// export default routesReducer;

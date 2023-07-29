@@ -1,47 +1,40 @@
 import React, { useEffect } from "react";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  useMap,
+  Polyline,
+} from "react-leaflet";
 import L, { Icon } from "leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { useAppSelector } from "../hooks/storeHooks";
-import { getChosenRoute } from "../store/routesReducer";
 import "leaflet/dist/leaflet.css";
 import "./index.css";
 import { IRoute, IPoints } from "../models";
-import { CreateRoutineMachineLayer } from "./RoutingMachine";
+import { RootState } from "../store/createStore";
+import toLatLng from "../helpers/toLatLng";
+import createRoutePoints from "../helpers/createRoutePoints";
 
 const MapComponent = () => {
   const centerPoint = new L.LatLng(59.938955, 30.315644);
-  const chosenRoute: IRoute | null = useAppSelector(getChosenRoute());
+  const chosenRoute: IRoute | null = useAppSelector(
+    (state: RootState) => state.routesReducer.chosenRoute
+  );
+  const OSRMRoute = useAppSelector(
+    (state: RootState) => state.routesReducer.OSRMRoute
+  );
   let routePoints: IPoints[] | undefined;
   if (chosenRoute) {
-    routePoints = [
-      {
-        geocode: new L.LatLng(chosenRoute.pointOne[0], chosenRoute.pointOne[1]),
-        popUp: "Точка 1",
-      },
-      {
-        geocode: new L.LatLng(chosenRoute.pointTwo[0], chosenRoute.pointTwo[1]),
-        popUp: "Точка 2",
-      },
-      {
-        geocode: new L.LatLng(
-          chosenRoute.pointThree[0],
-          chosenRoute.pointThree[1]
-        ),
-        popUp: "Точка 3",
-      },
-    ];
+    routePoints = createRoutePoints(chosenRoute);
   }
   const customIcon = new Icon({
     iconUrl: require(".//img/placeholder.png"),
     iconSize: [38, 38],
   });
-  const SetNewRoute = () => {
+  const AutoRecenter = () => {
     const map = useMap();
-    const oldRoute = document.querySelector("g");
-    if (oldRoute) {
-      oldRoute.innerHTML = "";
-    }
     useEffect(() => {
       if (chosenRoute) {
         const lat =
@@ -56,7 +49,6 @@ const MapComponent = () => {
           3;
         const newCenter = new L.LatLng(lat, lng);
         map.setView(newCenter);
-        map.addControl(CreateRoutineMachineLayer(chosenRoute));
       }
     }, [map]);
     return null;
@@ -76,7 +68,8 @@ const MapComponent = () => {
               </Marker>
             ))}
         </MarkerClusterGroup>
-        <SetNewRoute />
+        {OSRMRoute && <Polyline positions={toLatLng(OSRMRoute)} color="red" />}
+        <AutoRecenter />
       </MapContainer>
     </>
   );
