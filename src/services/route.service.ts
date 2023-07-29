@@ -7,9 +7,13 @@ const requestSettings =
 
 const routeService = {
   getRoute: async (points: string) => {
-    const finalURL = routeEndpoint + points + requestSettings;
-    const { data } = await httpService.get(finalURL);
-    return data;
+    try {
+      const finalURL = routeEndpoint + points + requestSettings;
+      const { data } = await httpService.get(finalURL);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 
