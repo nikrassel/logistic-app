@@ -1,6 +1,6 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { IRoutesState, IFinalRoute } from "../models";
+import { IRoutesState, IFinalRoute, ITableData } from "../models";
 // import type { RootState } from "./createStore";
 
 const initialState: IRoutesState = {
@@ -28,6 +28,7 @@ const initialState: IRoutesState = {
     },
   ],
   chosenRoute: null,
+  error: false,
 };
 
 const routesSlice = createSlice({
@@ -41,11 +42,16 @@ const routesSlice = createSlice({
       state.chosenRoute = state.routes[routeIndex];
       state.OSRMRoute = action.payload.OSRMRoute;
     },
+    errorOccurred(state) {
+      state.error = true;
+    },
   },
 });
 
 export const SET_ROUTE = "routes/setRoute";
-export const setRoute = createAction<Object>(SET_ROUTE);
+export const OCCURE_ERROR = "routes/errorOccurred";
+export const setRoute = createAction<ITableData>(SET_ROUTE);
+export const occureError = createAction(OCCURE_ERROR);
 
 export const { setTheRoute } = routesSlice.actions;
 export default routesSlice.reducer;

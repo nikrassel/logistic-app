@@ -16,6 +16,7 @@ export interface IRoutesState {
   routes: IRoute[];
   chosenRoute: IRoute | null;
   OSRMRoute?: number[];
+  error: boolean;
 }
 
 export interface IFinalRoute {
