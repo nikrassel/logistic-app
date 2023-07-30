@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import routesReducer from "./routesReducer";
 import createSagaMiddleware from "redux-saga";
-import { mainSaga } from "../sagas/routeSaga";
+import routesReducer from "../reducers/routesReducer";
+import { routeSaga } from "../sagas/routeSaga";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -15,7 +15,7 @@ export function createStore() {
 
 export const store = createStore();
 
-sagaMiddleware.run(mainSaga);
+sagaMiddleware.run(routeSaga);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

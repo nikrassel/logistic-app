@@ -1,9 +1,7 @@
 export interface IRoute {
   key: React.Key;
   name: string;
-  pointOne: number[];
-  pointTwo: number[];
-  pointThree: number[];
+  points: number[][];
 }
 
 export interface ITableData extends IRoute {
@@ -15,8 +13,9 @@ export interface ITableData extends IRoute {
 export interface IRoutesState {
   routes: IRoute[];
   chosenRoute: IRoute | null;
-  OSRMRoute?: number[];
+  OSRMRoute: number[] | null;
   error: boolean;
+  loading: boolean;
 }
 
 export interface IFinalRoute {
@@ -27,4 +26,9 @@ export interface IFinalRoute {
 export interface IPoints {
   geocode: L.LatLng;
   popUp: string;
+}
+
+export interface IAxiosResponse {
+  code: string;
+  routes: any;
 }

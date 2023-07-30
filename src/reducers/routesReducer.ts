@@ -1,34 +1,42 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { IRoutesState, IFinalRoute, ITableData } from "../models";
-// import type { RootState } from "./createStore";
+import { SET_ROUTE, OCCURE_ERROR, BEGIN_LOADING } from "./types";
 
 const initialState: IRoutesState = {
   routes: [
     {
       key: "1",
       name: "Маршрут №1",
-      pointOne: [59.84660399, 30.29496392],
-      pointTwo: [59.82934196, 30.42423701],
-      pointThree: [59.83567701, 30.38064206],
+      points: [
+        [59.84660399, 30.29496392],
+        [59.82934196, 30.42423701],
+        [59.83567701, 30.38064206],
+      ],
     },
     {
       key: "2",
       name: "Маршрут №2",
-      pointOne: [59.82934196, 30.42423701],
-      pointTwo: [59.82761295, 30.41705607],
-      pointThree: [59.84660399, 30.29496392],
+      points: [
+        [59.82934196, 30.42423701],
+        [59.82761295, 30.41705607],
+        [59.84660399, 30.29496392],
+      ],
     },
     {
       key: "3",
       name: "Маршрут №3",
-      pointOne: [59.83567701, 30.38064206],
-      pointTwo: [59.84660399, 30.29496392],
-      pointThree: [59.82761295, 30.41705607],
+      points: [
+        [59.83567701, 30.38064206],
+        [59.84660399, 30.29496392],
+        [59.82761295, 30.41705607],
+      ],
     },
   ],
   chosenRoute: null,
+  OSRMRoute: null,
   error: false,
+  loading: false,
 };
 
 const routesSlice = createSlice({
@@ -41,31 +49,21 @@ const routesSlice = createSlice({
       );
       state.chosenRoute = state.routes[routeIndex];
       state.OSRMRoute = action.payload.OSRMRoute;
+      state.loading = false;
     },
     errorOccurred(state) {
       state.error = true;
+      state.loading = false;
+    },
+    beginLoading(state) {
+      state.loading = true;
     },
   },
 });
 
-export const SET_ROUTE = "routes/setRoute";
-export const OCCURE_ERROR = "routes/errorOccurred";
 export const setRoute = createAction<ITableData>(SET_ROUTE);
 export const occureError = createAction(OCCURE_ERROR);
+export const beginLoading = createAction(BEGIN_LOADING);
 
 export const { setTheRoute } = routesSlice.actions;
 export default routesSlice.reducer;
-
-// const { reducer: routesReducer, actions } = routesSlice;
-// const { setTheRoute } = actions;
-
-// export const choseTheRoute = (data: React.Key) => (dispatch: any) => {
-//   dispatch(setTheRoute(data));
-// };
-
-// export const getAllRoutes = () => (state: RootState) => state.routes.routes;
-
-// export const getChosenRoute = () => (state: RootState) =>
-//   state.routes.chosenRoute;
-
-// export default routesReducer;

@@ -1,12 +1,18 @@
 import { takeEvery, put } from "redux-saga/effects";
-import { SET_ROUTE, setTheRoute, occureError } from "../store/routesReducer";
+import {
+  setTheRoute,
+  occureError,
+  beginLoading,
+} from "../reducers/routesReducer";
 import routeService from "../services/route.service";
 import getPointsForRequest from "../helpers/getPointsForRequest";
+import { IAxiosResponse } from "../models";
+import { SET_ROUTE } from "../reducers/types";
 
-export function* getRouteSaga(action: any) {
+export function* sagaWorker(action: any) {
+  yield put(beginLoading());
   const points = getPointsForRequest(action.payload);
-  // @ts-ignore
-  const request = yield routeService.getRoute(points);
+  const request: IAxiosResponse = yield routeService.getRoute(points);
   if (!request) {
     yield put(occureError());
   } else {
@@ -21,6 +27,6 @@ export function* getRouteSaga(action: any) {
   }
 }
 
-export function* mainSaga() {
-  yield takeEvery(SET_ROUTE, getRouteSaga);
+export function* routeSaga() {
+  yield takeEvery(SET_ROUTE, sagaWorker);
 }

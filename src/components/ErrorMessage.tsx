@@ -1,5 +1,5 @@
-import { Alert, Space } from "antd";
 import React from "react";
+import { Alert, Space } from "antd";
 import { useAppSelector } from "../hooks/storeHooks";
 import { RootState } from "../store/createStore";
 
@@ -15,6 +15,7 @@ const ErrorMessage = () => {
           description="Что-то пошло не так, попробуйте перезапустить страницу."
           type="error"
           closable
+          showIcon
         />
       </Space>
     );

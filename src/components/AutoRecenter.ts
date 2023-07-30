@@ -1,8 +1,12 @@
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
+import { IPoints } from "../models";
 
-// @ts-ignore
-const AutoRecenter = ({ routePoints }) => {
+const AutoRecenter = ({
+  routePoints,
+}: {
+  routePoints: IPoints[] | undefined;
+}) => {
   const map = useMap();
   useEffect(() => {
     if (routePoints) {

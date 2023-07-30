@@ -9,13 +9,13 @@ import {
 import L, { Icon } from "leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { useAppSelector } from "../hooks/storeHooks";
-import "leaflet/dist/leaflet.css";
-import "./index.css";
-import { IRoute, IPoints } from "../models";
+import { IRoute } from "../models";
 import { RootState } from "../store/createStore";
 import toLatLng from "../helpers/toLatLng";
 import createRoutePoints from "../helpers/createRoutePoints";
 import AutoRecenter from "./AutoRecenter";
+import "leaflet/dist/leaflet.css";
+import "./index.css";
 
 const MapComponent = () => {
   const centerPoint = new L.LatLng(59.938955, 30.315644);
@@ -25,10 +25,6 @@ const MapComponent = () => {
   const OSRMRoute = useAppSelector(
     (state: RootState) => state.routesReducer.OSRMRoute
   );
-  let routePoints: IPoints[] | undefined;
-  if (chosenRoute) {
-    routePoints = createRoutePoints(chosenRoute);
-  }
   const customIcon = new Icon({
     iconUrl: require(".//img/placeholder.png"),
     iconSize: [38, 38],
@@ -42,14 +38,16 @@ const MapComponent = () => {
         />
         <MarkerClusterGroup>
           {chosenRoute &&
-            routePoints?.map((point, index) => (
+            createRoutePoints(chosenRoute).map((point, index) => (
               <Marker position={point.geocode} icon={customIcon} key={index}>
                 <Popup>{point.popUp}</Popup>
               </Marker>
             ))}
         </MarkerClusterGroup>
         {OSRMRoute && <Polyline positions={toLatLng(OSRMRoute)} color="red" />}
-        <AutoRecenter routePoints={routePoints} />
+        {chosenRoute && (
+          <AutoRecenter routePoints={createRoutePoints(chosenRoute)} />
+        )}
       </MapContainer>
     </>
   );
