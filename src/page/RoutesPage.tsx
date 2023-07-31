@@ -2,17 +2,21 @@ import React from "react";
 import "./index.css";
 import RoutesTable from "../components/RoutesTable";
 import MapComponent from "../components/MapComponent";
+import ErrorMessage from "../components/ErrorMessage";
 
 const RoutesPage = () => {
   return (
-    <div className="main-content">
-      <div className="table-container">
-        <RoutesTable />
+    <>
+      <ErrorMessage />
+      <div className="main-content">
+        <div className="table-container">
+          <RoutesTable />
+        </div>
+        <div className="map-container">
+          <MapComponent />
+        </div>
       </div>
-      <div className="map-container">
-        <MapComponent />
-      </div>
-    </div>
+    </>
   );
 };
 
