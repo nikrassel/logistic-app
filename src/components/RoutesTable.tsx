@@ -3,7 +3,8 @@ import { Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { IRoute, ITableData } from "../models";
 import { useAppDispatch, useAppSelector } from "../hooks/storeHooks";
-import { getAllRoutes, choseTheRoute } from "../store/routesReducer";
+import { setRoute } from "../reducers/routesReducer";
+import { RootState } from "../store/createStore";
 
 const columns: ColumnsType<ITableData> = [
   {
@@ -26,23 +27,21 @@ const columns: ColumnsType<ITableData> = [
 
 const RouteTable = () => {
   const dispatch = useAppDispatch();
-  const routes: IRoute[] = useAppSelector(getAllRoutes());
+  const routes: IRoute[] = useAppSelector(
+    (state: RootState) => state.routesReducer.routes
+  );
   const tableData = routes?.map((route) => {
     return {
       ...route,
-      firstPoint: route.pointOne.join(", "),
-      secondPoint: route.pointTwo.join(", "),
-      thirdPoint: route.pointThree.join(", "),
+      firstPoint: route.points[0].join(", "),
+      secondPoint: route.points[1].join(", "),
+      thirdPoint: route.points[2].join(", "),
     };
   });
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: ITableData[]) => {
-      dispatch(choseTheRoute(selectedRows[0].key));
+      dispatch(setRoute(selectedRows[0]));
     },
-    getCheckboxProps: (record: ITableData) => ({
-      disabled: record.name === "Disabled User",
-      name: record.name,
-    }),
   };
   return (
     <div>
